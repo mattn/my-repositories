@@ -5,6 +5,7 @@ Listing my repositories
 ## Usage
 
 ```
+$ export GITHUB_OAUTH_TOKEN=XXXXXXXXXXXXXXXXXXX
 $ my-repositories mattn
 ```
 
