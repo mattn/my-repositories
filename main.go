@@ -26,6 +26,12 @@ type Repository struct {
 }
 
 func main() {
+	if len(os.Args) != 2 {
+		fmt.Fprintln(os.Stderr, "usage: [ACCOUNT]")
+		os.Exit(2)
+	}
+	user := os.Args[1]
+
 	src := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: os.Getenv("GITHUB_OAUTH_TOKEN")},
 	)
@@ -33,13 +39,14 @@ func main() {
 	client := githubv4.NewClient(httpClient)
 
 	repositoriesVar := map[string]interface{}{
-		"login":             githubv4.String("mattn"),
+		"login":             githubv4.String(user),
 		"repositoriesCusor": (*githubv4.String)(nil),
 	}
 	for {
 		err := client.Query(context.Background(), &repositoriesQuery, repositoriesVar)
 		if err != nil {
 			fmt.Println(err)
+			os.Exit(1)
 		}
 		for _, repository := range repositoriesQuery.User.Repositories.Nodes {
 			fmt.Println(repository.Name)
