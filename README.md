@@ -5,7 +5,7 @@ Listing my repositories
 ## Usage
 
 ```
-$ my-repositories
+$ my-repositories mattn
 ```
 
 ## Installation
