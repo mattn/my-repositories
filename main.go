@@ -17,7 +17,7 @@ var repositoriesQuery struct {
 				EndCursor   githubv4.String
 				HasNextPage bool
 			}
-		} `graphql:"repositories(first: 100, isFork: false, after: $repositoriesCusor)"`
+		} `graphql:"repositories(first: 100, isFork: false, after: $repositoriesCursor)"`
 	} `graphql:"user(login: $login)"`
 }
 
@@ -40,7 +40,7 @@ func main() {
 
 	repositoriesVar := map[string]interface{}{
 		"login":             githubv4.String(user),
-		"repositoriesCusor": (*githubv4.String)(nil),
+		"repositoriesCursor": (*githubv4.String)(nil),
 	}
 	for {
 		err := client.Query(context.Background(), &repositoriesQuery, repositoriesVar)
@@ -54,6 +54,6 @@ func main() {
 		if !repositoriesQuery.User.Repositories.PageInfo.HasNextPage {
 			break
 		}
-		repositoriesVar["repositoriesCusor"] = githubv4.NewString(repositoriesQuery.User.Repositories.PageInfo.EndCursor)
+		repositoriesVar["repositoriesCursor"] = githubv4.NewString(repositoriesQuery.User.Repositories.PageInfo.EndCursor)
 	}
 }
